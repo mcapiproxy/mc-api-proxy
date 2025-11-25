@@ -19,15 +19,19 @@ app.all("/:endpoint{.+}", async (c) => {
   let body = null
   try {
     body = await c.req.json()
+    return c.text(`A ${body === null}`)
   } catch {
     try {
       body = await c.req.parseBody()
+      return c.text(`C ${body === null}`)
     } catch { 
       try {
         body = await c.req.text()
+        return c.text(`B ${body === null}`)
       } catch {}
     }
   }
+  return c.text(`D ${body === null}`)
 
   if (body)
     reqInit.body = body
