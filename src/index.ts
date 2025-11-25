@@ -18,20 +18,16 @@ app.all("/:endpoint{.+}", async (c) => {
   
   let body = null
   try {
-    body = await c.req.text()
-    return c.text(`A ${c.req.header("content-type")}`)
+    body = await c.req.json()
   } catch {
     try {
-      body = await c.req.json()
-      return c.text(`B ${c.req.header("content-type")}`)
+      body = await c.req.parseBody()
     } catch { 
       try {
-        body = await c.req.parseBody()
-        return c.text(`C ${c.req.header("content-type")}`)
+        body = await c.req.text()
       } catch {}
     }
   }
-  return c.text(`D ${c.req.header("content-type")}`)
 
   // if (body)
   //   reqInit.body = body
