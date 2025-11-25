@@ -17,20 +17,8 @@ app.all("/:endpoint{.+}", async (c) => {
     }
   }
 
-  let body = null
-  const contentType = c.req.header("content-type") || ""
-  if (contentType.includes("application/json")) {
-    body = await c.req.json()
-  } else if (contentType.includes("multipart/form-data")) {
-    body = await c.req.formData()
-  } else if (contentType.includes("application/x-www-form-urlencoded")) {
-    body = await c.req.parseBody()
-  } else if (c.req.method !== "GET" && c.req.method !== "HEAD") {
-    body = await c.req.text()
-  }
-
-  if (body)
-    reqInit.body = body
+  if (c.req.raw.body !== null)
+    reqInit.body = c.req.raw.body
 
   const res = await fetch(`https://api.minecraftservices.com/minecraft/${endpoint}`, reqInit)
   return res
