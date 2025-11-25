@@ -19,21 +19,25 @@ app.all("/:endpoint{.+}", async (c) => {
   let body = null
   try {
     body = await c.req.text()
+    return c.text("A")
   } catch {
     try {
       body = await c.req.json()
+      return c.text("B")
     } catch { 
       try {
         body = await c.req.parseBody()
+        return c.text("C")
       } catch {}
     }
   }
+  return c.text("D")
 
-  if (body)
-    reqInit.body = body
+  // if (body)
+  //   reqInit.body = body
 
-  const res = await fetch(`https://api.minecraftservices.com/minecraft/${endpoint}`, reqInit)
-  return res
+  // const res = await fetch(`https://api.minecraftservices.com/minecraft/${endpoint}`, reqInit)
+  // return res
 })
 
 export default app
