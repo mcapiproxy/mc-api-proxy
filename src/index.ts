@@ -21,15 +21,11 @@ app.all("/:endpoint{.+}", async (c) => {
     body = await c.req.text()
   } catch {
     try {
-      body = await c.req.formData()
+      body = await c.req.json()
     } catch { 
       try {
-        body = await c.req.json()
-      } catch { 
-        try {
-          body = await c.req.parseBody()
-        } catch {}
-      }
+        body = await c.req.parseBody()
+      } catch {}
     }
   }
 
