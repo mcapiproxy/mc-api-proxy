@@ -29,11 +29,11 @@ app.all("/:endpoint{.+}", async (c) => {
     }
   }
 
-  // if (body)
-  //   reqInit.body = body
+  if (body)
+    reqInit.body = body
 
-  // const res = await fetch(`https://api.minecraftservices.com/minecraft/${endpoint}`, reqInit)
-  // return res
+  const res = await fetch(`https://api.minecraftservices.com/minecraft/${endpoint}`, reqInit)
+  return res
 })
 
 export default app
