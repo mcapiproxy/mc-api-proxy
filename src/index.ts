@@ -25,7 +25,11 @@ app.all("/:endpoint{.+}", async (c) => {
     } catch { 
       try {
         body = await c.req.json()
-      } catch { }
+      } catch { 
+        try {
+          body = await c.req.blob()
+        } catch {}
+      }
     }
   }
 
