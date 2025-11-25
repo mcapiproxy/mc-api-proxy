@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
+import { parse } from 'hono/utils/cookie';
 
 const app = new Hono()
 
@@ -15,23 +16,18 @@ app.all("/:endpoint{.+}", async (c) => {
       ...c.req.header()
     }
   }
-  
+
   let body = null
-  try {
+  const contentType = c.req.header("content-type") || ""
+  if (contentType.includes("application/json")) {
     body = await c.req.json()
-    return c.text(`A ${body === null}`)
-  } catch {
-    try {
-      body = await c.req.parseBody()
-      return c.text(`C ${body === null}`)
-    } catch { 
-      try {
-        body = await c.req.text()
-        return c.text(`B ${body === null}`)
-      } catch {}
-    }
+  } else if (contentType.includes("multipart/form-data")) {
+    body = await c.req.formData()
+  } else if (contentType.includes("application/x-www-form-urlencoded")) {
+    body = await c.req.parseBody()
+  } else if (c.req.method !== "GET" && c.req.method !== "HEAD") {
+    body = await c.req.text()
   }
-  return c.text(`D ${body === null}`)
 
   if (body)
     reqInit.body = body
