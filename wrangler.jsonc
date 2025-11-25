@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "mc-api-proxy",
+  "name": "proxy",
   "main": "src/index.ts",
   "compatibility_date": "2025-11-25"
   // "compatibility_flags": [
